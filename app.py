@@ -13,6 +13,12 @@ def get_secret(key):
     except:
         return os.getenv(key)
 
+# TEMPORARY DEBUG - remove after fixing
+st.write("USER:", get_secret("SNOWFLAKE_USER"))
+st.write("ACCOUNT:", get_secret("SNOWFLAKE_ACCOUNT"))
+st.write("WAREHOUSE:", get_secret("SNOWFLAKE_WAREHOUSE"))
+
+
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Energy Demand Analytics",
