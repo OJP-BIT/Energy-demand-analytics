@@ -9,11 +9,11 @@ load_dotenv()
 
 def get_secret(key):
     try:
-        return st.secrets[key]        # Streamlit Cloud
+        return st.secrets[key]
     except:
-        return os.getenv(key)         # Local .env
+        return os.getenv(key)
 
-# ── Page config ──────────────────────────────────────────────────────────────
+# ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Energy Demand Analytics",
     page_icon="⚡",
@@ -32,10 +32,16 @@ def get_connection():
         schema="ANALYTICS"
     )
 
+# Use cursor instead of pd.read_sql to avoid NoneType errors
 @st.cache_data(ttl=3600)
 def run_query(query: str) -> pd.DataFrame:
     conn = get_connection()
-    return pd.read_sql(query, conn)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    columns = [col[0] for col in cursor.description]
+    rows = cursor.fetchall()
+    cursor.close()
+    return pd.DataFrame(rows, columns=columns)
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 st.sidebar.title("⚡ Energy Analytics")
@@ -162,7 +168,6 @@ try:
     actuals_df = actuals_df.sort_values("DEMAND_DATE")
 
     fig_fcst = go.Figure()
-
     fig_fcst.add_trace(go.Scatter(
         x=pd.concat([forecast_df["FORECAST_DATE"], forecast_df["FORECAST_DATE"][::-1]]),
         y=pd.concat([forecast_df["YHAT_UPPER"], forecast_df["YHAT_LOWER"][::-1]]),
@@ -274,5 +279,5 @@ st.markdown("---")
 st.caption(
     "Built by Ojas · Data sourced from U.S. EIA Open Data API · "
     "Warehouse: Snowflake · Forecast: Facebook Prophet · "
-    "[GitHub](https://github.com) · [LinkedIn](https://linkedin.com)"
+    "[GitHub](https://github.com/OJP-BIT/Energy-demand-analytics) · [LinkedIn](https://linkedin.com)"
 )
