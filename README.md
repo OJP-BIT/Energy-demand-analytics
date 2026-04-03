@@ -1,6 +1,6 @@
 # ⚡ U.S. Energy Demand Forecasting & Anomaly Detection
 
-End-to-end data analytics project for the energy industry — built to demonstrate SQL, forecasting, and dashboard skills for Data Analyst roles.
+End-to-end data analytics project for the energy industry which is built to demonstrate SQL, forecasting, and dashboard skills.
 
 👉 **[View Live Dashboard](https://energy-demand-analytics-dmexmwbwzmqkejvgb2o6mf.streamlit.app/)**
 
