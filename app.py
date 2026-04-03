@@ -21,7 +21,7 @@ st.set_page_config(
 )
 
 # ── Snowflake connection ──────────────────────────────────────────────────────
-@st.cache_resource
+
 def get_connection():
     return snowflake.connector.connect(
         user=get_secret("SNOWFLAKE_USER"),
@@ -33,7 +33,7 @@ def get_connection():
     )
 
 # Use cursor instead of pd.read_sql to avoid NoneType errors
-@st.cache_data(ttl=3600)
+
 def run_query(query: str) -> pd.DataFrame:
     conn = get_connection()
     cursor = conn.cursor()
